@@ -1,17 +1,22 @@
->**Note**: Please **fork** the current Udacity repository so that you will have a **remote** repository in **your** Github account. Clone the remote repository to your local machine. Later, as a part of the project "Post your Work on Github", you will push your proposed changes to the remote repository in your Github account.
+### Date Created
+February 20,2025
 
-### Date created
-Include the date you created this project and README file.
+### Bikeshare Python Project
 
-### Project Title
-Replace the Project Title
 
 ### Description
-Describe what your project is about and what it does
+The program allows users to perform various statistical analysis on a specifically formatted dataset from Bikeshare. Users input Month and Day filters to limit the analysis to a specified time period. Users also have a choice to see the raw data.
 
 ### Files used
-Include the files used
+The following data files were used to perform all statistical analysis. All files were provided by Udacity.
+* chicago.csv
+* washington.csv
+* new_york_city.csv 
 
 ### Credits
-It's important to give proper credit. Add links to any repo that inspired you or blogposts you consulted.
+I used the following websites to help me with examples of the functionality I wanted to implement.
+* geeksforgeeks.org
+* stackoverflow.com
+* statology.org
+* pandas.pydata.org
 
