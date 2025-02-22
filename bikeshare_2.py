@@ -77,35 +77,42 @@ def filter_data(df, month, day):
     return dff
 
 
-def time_stats(dff,city,month,day):
-    """Displays statistics on the most frequent times of travel.
+def time_stats(df,city):
+    """Displays statistics on the most frequent times of travel. Data is not filtered to user filter inputs
 
     Args:
-        df - dataframe containing the selected city data, filtered by month and day (if user entered a specific month and day)
+        df - dataframe containing the selected city data, unfiltered
         (str) city - name of the city for the data loaded
-        (str) month - name of the month to filter by, or "all" to apply no month filter
-        (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
     print('\nCalculating The Most Frequent Times of Travel in {}...\n'.format(city.title()))
     start_time = time.time()
 
-    common_month = dff['month'].mode()[0]
+    # Calculate counts of users by month
+    user_month_count = df['month'].value_counts()
+    # Setup the bar graph to display the user types
+    user_month_count.plot(kind='bar')
+    plt.xlabel('Month')
+    plt.ylabel('Count')
+    plt.title('Count of Users by Month')
+    plt.show()
+
+    common_month = df['month'].mode()[0]
     # test if filtered by month before calculating the most common month
-    if dff['month'].nunique() > 1:
+    if df['month'].nunique() > 1:
         # display the most common month
         print('\nThe most common month for bike travel is...\n {}'.format(common_month.title()))
 
-    common_day = dff['day_of_week'].mode()[0]
+    common_day = df['day_of_week'].mode()[0]
     # test if filtered by day of the week before calculating the most common day of the week
-    if dff['day_of_week'].nunique() > 1:
+    if df['day_of_week'].nunique() > 1:
         # display the most common day of week
         print('\nThe most common day of the week in {} for bike travel is...\n {}'.format(common_month.title(), common_day.title()))
 
 
     # extract hour from the Start Time column to create an hour column
-    dff['hour'] = dff['Start Time'].dt.strftime('%I:00 %p')
+    df['hour'] = df['Start Time'].dt.strftime('%I:00 %p')
     # find the most common hour
-    common_hour = dff['hour'].mode()[0]
+    common_hour = df['hour'].mode()[0]
     # display the most common hour of the day
     print('\nThe most common hour of the day on a {} in {} for bike travel is...\n {}'.format(common_day.title(), common_month.title(), common_hour))
 
@@ -117,7 +124,7 @@ def station_stats(dff,city,month,day):
     """Displays statistics on the most popular stations and trip.
 
       Args:
-        df - dataframe containing the selected city data, filtered by month and day (if user entered a specific month and day)
+        dff - dataframe containing the selected city data, filtered by month and day (if user entered a specific month and day)
         (str) city - name of the city for the data loaded
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
@@ -275,7 +282,7 @@ def main():
             # apply filters to the dataframe
             dff = filter_data(df,month,day)
             # run time stats to the filtered data
-            time_stats(dff,city,month,day)
+            time_stats(df,city)
             # run station stats to the filtered data
             station_stats(dff,city,month,day)
             # run trip duration stats to the filtered data
