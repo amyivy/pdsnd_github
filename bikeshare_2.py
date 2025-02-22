@@ -252,6 +252,11 @@ def view_raw_data(df, city):
     """   
     print('\nReviewing raw bikeshare data for {}.\n'.format(city.title()))
     nextrows = input('\nWould you like to see the first 5 rows of raw data? Enter yes or no.\n')
+
+    while nextrows.lower() != 'yes' and nextrows.lower() != 'no':
+        print("\n{} is invalid input. Expected response is yes or no.".format(nextrows))
+        nextrows = input('\nWould you like to see the first 5 rows of raw data? Enter yes or no.\n')   
+
     i = 0
     rows = len(df.index)
     while nextrows.lower() == 'yes' and i < rows-1:
