@@ -3,7 +3,6 @@ February 20,2025
 
 ### Bikeshare Python Project
 
-
 ### Description
 The program allows users to perform various statistical analysis on a specifically formatted dataset from Bikeshare. Users input Month and Day filters to limit the analysis to a specified time period. Users also have a choice to see the raw data.
 
@@ -35,3 +34,5 @@ I used the following websites to help me with examples of the functionality I wa
 * statology.org
 * pandas.pydata.org
 
+### Getting Help
+Submit questions, enhancement suggestions, bug fix suggestions on GitHub.
