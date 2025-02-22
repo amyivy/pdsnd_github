@@ -77,11 +77,12 @@ def filter_data(df, month, day):
     return dff
 
 
-def time_stats(dff,city,month,day):
-    """Displays statistics on the most frequent times of travel.
+def time_stats(df,dff,city,month,day):
+    """Displays statistics on the most frequent times of travel. Data is not filtered to user filter inputs
 
     Args:
-        df - dataframe containing the selected city data, filtered by month and day (if user entered a specific month and day)
+        df - dataframe containing the selected city data, unfiltered
+        dff - dataframe containing the selected city data, filtered by month and day (if user entered a specific month and day)
         (str) city - name of the city for the data loaded
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
@@ -89,18 +90,30 @@ def time_stats(dff,city,month,day):
     print('\nCalculating The Most Frequent Times of Travel in {}...\n'.format(city.title()))
     start_time = time.time()
 
-    common_month = dff['month'].mode()[0]
+    # Calculate counts of users by month on unfiltered dataset
+    user_month_count = df['month'].value_counts()
+    # Setup the bar graph to display the user counts by month
+    user_month_count.plot(kind='bar')
+    plt.xlabel('Month')
+    plt.ylabel('Count')
+    plt.title('Count of Users by Month')
+    plt.show()
+
     # test if filtered by month before calculating the most common month
     if dff['month'].nunique() > 1:
         # display the most common month
+        common_month = df['month'].mode()[0]
         print('\nThe most common month for bike travel is...\n {}'.format(common_month.title()))
+    else:
+        common_month = month
 
-    common_day = dff['day_of_week'].mode()[0]
     # test if filtered by day of the week before calculating the most common day of the week
     if dff['day_of_week'].nunique() > 1:
         # display the most common day of week
+        common_day = df['day_of_week'].mode()[0]
         print('\nThe most common day of the week in {} for bike travel is...\n {}'.format(common_month.title(), common_day.title()))
-
+    else:
+        common_day = day
 
     # extract hour from the Start Time column to create an hour column
     dff['hour'] = dff['Start Time'].dt.strftime('%I:00 %p')
@@ -117,7 +130,7 @@ def station_stats(dff,city,month,day):
     """Displays statistics on the most popular stations and trip.
 
       Args:
-        df - dataframe containing the selected city data, filtered by month and day (if user entered a specific month and day)
+        dff - dataframe containing the selected city data, filtered by month and day (if user entered a specific month and day)
         (str) city - name of the city for the data loaded
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
@@ -252,6 +265,11 @@ def view_raw_data(df, city):
     """   
     print('\nReviewing raw bikeshare data for {}.\n'.format(city.title()))
     nextrows = input('\nWould you like to see the first 5 rows of raw data? Enter yes or no.\n')
+
+    while nextrows.lower() != 'yes' and nextrows.lower() != 'no':
+        print("\n{} is invalid input. Expected response is yes or no.".format(nextrows))
+        nextrows = input('\nWould you like to see the first 5 rows of raw data? Enter yes or no.\n')   
+
     i = 0
     rows = len(df.index)
     while nextrows.lower() == 'yes' and i < rows-1:
@@ -270,7 +288,7 @@ def main():
             # apply filters to the dataframe
             dff = filter_data(df,month,day)
             # run time stats to the filtered data
-            time_stats(dff,city,month,day)
+            time_stats(df,dff,city,month,day)
             # run station stats to the filtered data
             station_stats(dff,city,month,day)
             # run trip duration stats to the filtered data
@@ -285,8 +303,13 @@ def main():
             print("File '{}', for selected city: {}, is not found in the current directory.".format(CITY_DATA[city],city.title()))
         finally:
             restart = input('\nWould you like to restart? Enter yes or no.\n')
-            if restart.lower() != 'yes':
+            if restart.lower() == 'no':
                 break
+            elif restart.lower() != 'no' and restart.lower() != 'yes':
+                print("\n{} is invalid input. Next time enter yes or no.\n".format(restart))
+                break
+            else:
+                print("Restarting..........")
 
 if __name__ == "__main__":
 	main()
