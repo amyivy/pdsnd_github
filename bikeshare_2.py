@@ -285,8 +285,13 @@ def main():
             print("File '{}', for selected city: {}, is not found in the current directory.".format(CITY_DATA[city],city.title()))
         finally:
             restart = input('\nWould you like to restart? Enter yes or no.\n')
-            if restart.lower() != 'yes':
+            if restart.lower() == 'no':
                 break
+            elif restart.lower() != 'no' and restart.lower() != 'yes':
+                print("\n{} is invalid input. Next time enter yes or no.\n".format(restart))
+                break
+            else:
+                print("Restarting..........")
 
 if __name__ == "__main__":
 	main()
